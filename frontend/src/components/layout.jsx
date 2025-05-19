@@ -13,17 +13,9 @@ import { Link } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import GroupIcon from "@mui/icons-material/Group";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
-import { useEffect } from "react";
-import { useState } from "react";
+import { Outlet } from "react-router-dom";
 
-const Layout = ({ children }) => {
-  const [auth, setAuth] = useState("");
-  useEffect(() => {
-    const auth = localStorage.getItem("userToken");
-    setAuth(auth);
-  }, []);
-
-  console.log("token", auth);
+const Layout = () => {
   const sidebar = [
     { id: 1, label: "Dashboard", icon: <DashboardIcon />, route: "/dashboard" },
     { id: 2, label: "Groups", icon: <GroupIcon />, route: "/groups" },
@@ -44,59 +36,64 @@ const Layout = ({ children }) => {
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVM2hQ9KI6lnseVdlMaoJj2cTkRdr6TOB4GO46qUud4BBF5MHWO81LpJz-cdKfVajnJKw&usqp=CAU"
         />
         <Typography variant="h4">Kollab</Typography>
-        {auth ? <Button variant="contained">Log out</Button> : <Box></Box>}
+        <Button variant="contained">Log out</Button>
       </Box>
 
       <Box sx={{ display: "flex" }}>
-        {auth && (
-          <Box
-            sx={{
-              width: "18%",
-              backgroundColor: "#49919D",
-              borderTopRightRadius: 15,
-              borderBottomRightRadius: 15,
-              height: "100vh",
-            }}
-          >
-            <List>
-              {sidebar.slice(0, 1).map((item) => (
-                <Link
-                  key={item.id}
-                  to={item.route}
-                  style={{ textDecoration: "none" }}
-                >
-                  <ListItem disablePadding>
-                    <ListItemButton>
-                      <ListItemIcon>{item.icon}</ListItemIcon>
-                      <ListItemText
-                        primary={item.label}
-                        sx={{ color: "black" }}
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                </Link>
-              ))}
-            </List>
-            <Divider />
-            <List>
-              {sidebar.slice(1).map((item) => (
-                <Link to={item.route} style={{ textDecoration: "none" }}>
-                  <ListItem disablePadding>
-                    <ListItemButton>
-                      <ListItemIcon>{item.icon}</ListItemIcon>
-                      <ListItemText
-                        primary={item.label}
-                        sx={{ color: "black" }}
-                      />
-                    </ListItemButton>
-                  </ListItem>
-                </Link>
-              ))}
-            </List>
-            <Divider />
-          </Box>
-        )}
-        <Box sx={{ width: auth ? "80%" : "100%", mt: 3 }}>{children}</Box>
+        <Box
+          sx={{
+            width: "18%",
+            backgroundColor: "#49919D",
+            borderTopRightRadius: 15,
+            borderBottomRightRadius: 15,
+            height: "100vh",
+          }}
+        >
+          <List>
+            {sidebar.slice(0, 1).map((item) => (
+              <Link
+                key={item.id}
+                to={item.route}
+                style={{ textDecoration: "none" }}
+              >
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText
+                      primary={item.label}
+                      sx={{ color: "black" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+            ))}
+          </List>
+          <Divider />
+          <List>
+            {sidebar.slice(1).map((item) => (
+              <Link
+                to={item.route}
+                style={{ textDecoration: "none" }}
+                key={item.id}
+              >
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText
+                      primary={item.label}
+                      sx={{ color: "black" }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+            ))}
+          </List>
+          <Divider />
+        </Box>
+
+        <Box sx={{ width: "80%", mt: 3 }}>
+          <Outlet />
+        </Box>
       </Box>
     </>
   );

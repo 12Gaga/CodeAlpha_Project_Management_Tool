@@ -8,14 +8,14 @@ const AppRouter = () => {
   return (
     <>
       <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route path="/" Component={LogInPage} />
-            <Route path="/dashboard" Component={App} />
-            <Route path="/groups" Component={GroupPage} />
-            <Route path="/projects" Component={ProjectPage} />
-          </Routes>
-        </Layout>
+        <Routes>
+          <Route path="/" element={<LogInPage />} />
+          <Route element={<Layout />}>
+            <Route path="/dashboard" element={<App />} />
+            <Route path="/groups" element={<GroupPage />} />
+            <Route path="/projects" element={<ProjectPage />} />
+          </Route>
+        </Routes>
       </BrowserRouter>
     </>
   );

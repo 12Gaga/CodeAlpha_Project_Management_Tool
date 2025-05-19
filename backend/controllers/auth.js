@@ -20,13 +20,13 @@ export const getGoogleUser = async (req, res) => {
     const result = await db.query(q, [name]);
     const user = result.rows[0];
     if (user) {
-      return res.json({ message: "User exists", user });
+      return res.json(user);
     } else {
-      const q = `INSERT INTO users ("username", "email", "profilePic") VALUES ($1, $2, $3)`;
+      const q = `INSERT INTO users ("username", "email", "profilePic") VALUES ($1, $2, $3) RETURNING *`;
       const values = [name, email, picture];
       db.query(q, values, (err, data) => {
         if (err) return res.status(500).json(err);
-        return res.status(200).json("Succesfully Creating user");
+        return res.status(200).json(data.rows[0]);
       });
     }
   } catch (error) {

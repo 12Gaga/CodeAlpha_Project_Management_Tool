@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 const LogInPage = () => {
   const navigate = useNavigate();
   const handleLoginSuccess = async (credentialResponse) => {
-    localStorage.setItem("userToken", credentialResponse.credential);
     try {
       const { credential } = credentialResponse;
       // Send token to backend
@@ -20,6 +19,7 @@ const LogInPage = () => {
       );
 
       console.log("Server response:", res.data);
+      localStorage.setItem("currentUser", JSON.stringify(res.data));
       navigate("/dashboard");
     } catch (err) {
       console.error("Login failed", err);

@@ -37,11 +37,7 @@ const CreateGroupPage = ({ open, setOpen }) => {
       );
 
       console.log("Response:", res.data);
-      setOpen(false);
-      setExit(false);
-      setSearchName("");
-      setReturnUser([]);
-      setAddMember([currentUser]);
+      window.location.reload();
     } catch (err) {
       console.error("Login failed", err);
     }

@@ -4,6 +4,8 @@ import Layout from "./layout";
 import GroupPage from "../pages/groups/groups";
 import ProjectPage from "../pages/projects/projects";
 import LogInPage from "../pages/auth/login";
+import GroupDetail from "../pages/groups/groupDetail";
+import ProjectDetailPage from "../pages/projects/projectDetail";
 const AppRouter = () => {
   return (
     <>
@@ -14,6 +16,8 @@ const AppRouter = () => {
             <Route path="/dashboard" element={<App />} />
             <Route path="/groups" element={<GroupPage />} />
             <Route path="/projects" element={<ProjectPage />} />
+            <Route path="/group/:id" element={<GroupDetail />} />
+            <Route path="/project/:id" element={<ProjectDetailPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

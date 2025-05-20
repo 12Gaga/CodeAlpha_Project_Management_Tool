@@ -91,7 +91,7 @@ const Layout = () => {
           <Divider />
         </Box>
 
-        <Box sx={{ width: "80%", mt: 3 }}>
+        <Box sx={{ width: "80%", mt: 3, pl: 3 }}>
           <Outlet />
         </Box>
       </Box>

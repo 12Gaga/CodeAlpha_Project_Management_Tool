@@ -1,4 +1,10 @@
-import { Box, Paper, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardActionArea,
+  CardContent,
+  Typography,
+} from "@mui/material";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import { useState } from "react";
 import CreateGroupPage from "../../components/group/createGroup";
@@ -10,14 +16,16 @@ const GroupPage = () => {
   const [open, setOpen] = useState(false);
   const [groups, setGroups] = useState([]);
   const finalGroup = (allgroups) => {
+    const temp = [...groups];
     allgroups.map((i) => {
-      const exit = groups.find((g) => i.groupId === g.groupId);
+      const exit = temp.find((g) => i.groupId === g.groupId);
       if (!exit) {
-        setGroups([...groups, i]);
+        temp.push(i);
       }
     });
+    setGroups(temp);
   };
-  console.log("dsgg", groups);
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -34,7 +42,6 @@ const GroupPage = () => {
     }
     fetchData();
   }, []);
-  console.log("group", groups);
   return (
     <>
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
@@ -45,13 +52,46 @@ const GroupPage = () => {
           }}
         />
       </Box>
-      {groups.map((g) => (
-        <Link key={g.id}>
-          <Paper>
-            <Typography>{g.groupName}</Typography>
-          </Paper>
-        </Link>
-      ))}
+      <Typography variant="h5" sx={{ my: 4, textDecoration: "underline" }}>
+        Groups
+      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+        }}
+      >
+        {groups
+          .sort((a, b) => a.groupId - b.groupId)
+          .map((g) => (
+            <Link
+              to={`/group/${g.groupId}`}
+              key={g.id}
+              style={{ textDecoration: "none" }}
+            >
+              <Card sx={{ width: 150, mr: 3 }}>
+                <CardActionArea
+                  sx={{
+                    height: "100%",
+                    "&[data-active]": {
+                      backgroundColor: "action.selected",
+                      "&:hover": {
+                        backgroundColor: "action.selectedHover",
+                      },
+                    },
+                  }}
+                >
+                  <CardContent sx={{ height: "100%" }}>
+                    <Typography variant="h5" component="div">
+                      {g.groupName}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Link>
+          ))}
+      </Box>
       <CreateGroupPage open={open} setOpen={setOpen} />
     </>
   );

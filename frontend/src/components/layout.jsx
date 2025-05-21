@@ -20,6 +20,7 @@ const Layout = () => {
     { id: 1, label: "Dashboard", icon: <DashboardIcon />, route: "/dashboard" },
     { id: 2, label: "Groups", icon: <GroupIcon />, route: "/groups" },
     { id: 3, label: "Projects", icon: <AccountTreeIcon />, route: "/projects" },
+    { id: 4, label: "My Tasks", icon: <AccountTreeIcon />, route: "/tasks" },
   ];
   return (
     <>

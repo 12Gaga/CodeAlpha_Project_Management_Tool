@@ -3,16 +3,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import moment from "moment";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import {
-  Typography,
-  Box,
-  Paper,
-  Button,
-  MenuItem,
-  Card,
-  CardContent,
-} from "@mui/material";
+import { Typography, Box, Paper, Button, MenuItem } from "@mui/material";
 import CreateProject from "../../components/project/createProject";
+import ShowProjectPage from "../../components/project/showProjects";
 
 const GroupDetail = () => {
   const { id } = useParams();
@@ -101,30 +94,7 @@ const GroupDetail = () => {
       <Typography variant="h5" sx={{ textDecoration: "underline", my: 5 }}>
         Projects
       </Typography>
-      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-        {projects.map((p) => (
-          <Link
-            to={`/project/${p.id}`}
-            key={p.id}
-            style={{ textDecoration: "none" }}
-          >
-            <Card sx={{ width: 250, mr: 2 }}>
-              <CardContent>
-                <Typography
-                  variant="h6"
-                  sx={{ color: "text.secondary", mb: 1.5 }}
-                >
-                  {p.name}
-                </Typography>
-                <Typography sx={{ color: "text.secondary", mb: 1.5 }}>
-                  {moment(p.createdAt).fromNow()}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
-      </Box>
-
+      <ShowProjectPage projects={projects} />
       <CreateProject open={open} setOpen={setOpen} groupId={id} />
     </>
   );

@@ -12,15 +12,21 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
+import dayjs from "dayjs";
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 const CreateTask = ({ open, setOpen, projectId, memberIds }) => {
+  const currentDate = dayjs();
   const [taskDetail, setTaskDetail] = useState({
     name: "",
     desc: "",
-    deadline: "",
+    deadline: dayjs(),
     priorities: "",
     status: "TO DO",
-    memberId: "",
+    memberId: 0,
     projectId,
   });
 
@@ -31,8 +37,8 @@ const CreateTask = ({ open, setOpen, projectId, memberIds }) => {
   const handleClick = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:5000/project/createProject",
-        projectDetail,
+        "http://localhost:5000/task/createTask",
+        { ...taskDetail, deadline: taskDetail.deadline.toISOString() },
         {
           headers: {
             "Content-Type": "application/json",
@@ -115,6 +121,28 @@ const CreateTask = ({ open, setOpen, projectId, memberIds }) => {
               ))}
             </Select>
           </FormControl>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer
+              components={[
+                "DatePicker",
+                "MobileDatePicker",
+                "DesktopDatePicker",
+                "StaticDatePicker",
+              ]}
+            >
+              <DemoItem label="Responsive variant">
+                <DatePicker
+                  value={taskDetail.deadline}
+                  onChange={(newValue) => {
+                    setTaskDetail({
+                      ...taskDetail,
+                      deadline: newValue,
+                    });
+                  }}
+                />
+              </DemoItem>
+            </DemoContainer>
+          </LocalizationProvider>
         </DialogContent>
         <DialogActions>
           <Button

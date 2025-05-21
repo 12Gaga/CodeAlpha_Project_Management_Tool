@@ -4,10 +4,12 @@ import axios from "axios";
 import moment from "moment";
 import { Typography, Box, Button } from "@mui/material";
 import CreateTask from "../../components/task/createTask";
+import ShowTaskPage from "../../components/task/showTasks";
 
 const ProjectDetailPage = () => {
   const { id } = useParams();
   const [projectInfo, setProjectInfo] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const [open, setOpen] = useState(false);
   useEffect(() => {
     async function fetchData() {
@@ -25,11 +27,27 @@ const ProjectDetailPage = () => {
       } catch (err) {
         console.error(err);
       }
+      try {
+        const res = await axios.get("http://localhost:5000/task/getTasks", {
+          params: { projectId: id },
+          headers: { "Content-Type": "application/json" },
+        });
+
+        console.log("Response:", res.data);
+        setTasks(res.data);
+      } catch (err) {
+        console.error(err);
+      }
     }
     fetchData();
   }, []);
   return (
     <>
+      <Box sx={{ display: "flex" }}>
+        <Link to={`/projects`} style={{ textDecoration: "none" }}>
+          <Typography sx={{ mr: 2 }}>Projects</Typography>
+        </Link>
+      </Box>
       {projectInfo.length > 0 && (
         <>
           <Box>
@@ -55,6 +73,10 @@ const ProjectDetailPage = () => {
         projectId={id}
         memberIds={projectInfo}
       />
+      <Typography variant="h5" sx={{ textDecoration: "underline", my: 5 }}>
+        Tasks
+      </Typography>
+      <ShowTaskPage tasks={tasks} />
     </>
   );
 };

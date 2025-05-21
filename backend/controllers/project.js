@@ -44,3 +44,17 @@ export const getProject = (req, res) => {
     return res.status(200).json(data.rows);
   });
 };
+
+export const getUserProjects = (req, res) => {
+  const q = `
+  SELECT p.* 
+  FROM "groupMembers" AS gm
+  JOIN "groups" AS g ON gm."groupId" = g.id
+  JOIN "projects" AS p ON p."groupId" = g.id
+  WHERE gm."memberId" = $1
+`;
+  db.query(q, [req.query.userId], (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.status(200).json(data.rows);
+  });
+};

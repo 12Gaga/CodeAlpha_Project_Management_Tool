@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
-const CreateGroupPage = ({ open, setOpen }) => {
+const CreateGroupPage = ({ open, setOpen, fetchData }) => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const [name, setName] = useState("");
   const [searchName, setSearchName] = useState("");
@@ -37,7 +37,13 @@ const CreateGroupPage = ({ open, setOpen }) => {
       );
 
       console.log("Response:", res.data);
-      window.location.reload();
+      setOpen(false);
+      setName("");
+      setSearchName("");
+      setReturnUser([]);
+      setExit(false);
+      setAddMember([currentUser]);
+      fetchData();
     } catch (err) {
       console.error("Login failed", err);
     }
@@ -64,6 +70,7 @@ const CreateGroupPage = ({ open, setOpen }) => {
         open={open}
         onClose={() => {
           setOpen(false);
+          setName("");
           setExit(false);
           setSearchName("");
           setReturnUser([]);
@@ -167,6 +174,7 @@ const CreateGroupPage = ({ open, setOpen }) => {
             variant="outlined"
             onClick={() => {
               setOpen(false);
+              setName("");
               setExit(false);
               setSearchName("");
               setReturnUser([]);

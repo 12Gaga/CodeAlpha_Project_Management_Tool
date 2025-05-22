@@ -36,7 +36,7 @@ export const getProject = (req, res) => {
   FROM "projects" AS p
   JOIN "groups" AS g ON p."groupId" = g.id
   JOIN "groupMembers" AS gm ON gm."groupId" = g.id
- JOIN "users" AS u ON gm."memberId" = u.id
+  JOIN "users" AS u ON gm."memberId" = u.id
   WHERE p.id = $1
 `;
   db.query(q, [req.query.projectId], (err, data) => {
@@ -56,5 +56,15 @@ export const getUserProjects = (req, res) => {
   db.query(q, [req.query.userId], (err, data) => {
     if (err) return res.status(500).json(err);
     return res.status(200).json(data.rows);
+  });
+};
+
+export const deleteProject = (req, res) => {
+  const q = `
+  DELETE FROM projects WHERE id = $1
+`;
+  db.query(q, [req.query.projectId], (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.status(200).json("Deleted");
   });
 };

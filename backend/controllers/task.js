@@ -45,7 +45,7 @@ export const getTask = (req, res) => {
 `;
   db.query(q, [req.query.taskId], (err, data) => {
     if (err) return res.status(500).json(err);
-    return res.status(200).json(data.rows);
+    return res.status(200).json(data.rows[0]);
   });
 };
 
@@ -60,5 +60,25 @@ export const getUserTasks = (req, res) => {
   db.query(q, [req.query.userId], (err, data) => {
     if (err) return res.status(500).json(err);
     return res.status(200).json(data.rows);
+  });
+};
+
+export const updateStatus = (req, res) => {
+  const q = `
+    UPDATE tasks SET "status"=$1 WHERE id=$2
+`;
+  db.query(q, [req.body.status, req.body.taskId], (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.status(200).json("Update Successful");
+  });
+};
+
+export const deleteTask = (req, res) => {
+  const q = `
+  DELETE FROM tasks WHERE id = $1
+`;
+  db.query(q, [req.query.taskId], (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.status(200).json("Deleted");
   });
 };

@@ -28,7 +28,7 @@ const ProjectPage = () => {
   return (
     <>
       <Typography variant="h5" sx={{ mb: 2 }}>
-        Projects{" "}
+        Projects
       </Typography>
       <ShowProjectPage projects={projects} />
     </>

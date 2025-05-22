@@ -9,7 +9,7 @@ import {
 import { useState } from "react";
 import axios from "axios";
 
-const CreateProject = ({ open, setOpen, groupId }) => {
+const CreateProject = ({ open, setOpen, groupId, fetchData }) => {
   const [projectDetail, setProjectDetail] = useState({
     name: "",
     desc: "",
@@ -28,7 +28,13 @@ const CreateProject = ({ open, setOpen, groupId }) => {
       );
 
       console.log("Response:", res.data);
-      window.location.reload();
+      setOpen(false);
+      setProjectDetail({
+        name: "",
+        desc: "",
+        groupId,
+      });
+      fetchData();
     } catch (err) {
       console.error("Login failed", err);
     }
@@ -39,6 +45,11 @@ const CreateProject = ({ open, setOpen, groupId }) => {
         open={open}
         onClose={() => {
           setOpen(false);
+          setProjectDetail({
+            name: "",
+            desc: "",
+            groupId,
+          });
         }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -69,12 +80,17 @@ const CreateProject = ({ open, setOpen, groupId }) => {
             variant="outlined"
             onClick={() => {
               setOpen(false);
+              setProjectDetail({
+                name: "",
+                desc: "",
+                groupId,
+              });
             }}
           >
             Close
           </Button>
           <Button onClick={handleClick} variant="contained">
-            Agree
+            Save
           </Button>
         </DialogActions>
       </Dialog>

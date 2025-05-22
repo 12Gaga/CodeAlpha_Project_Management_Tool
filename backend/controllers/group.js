@@ -70,3 +70,13 @@ export const getGroup = (req, res) => {
     return res.status(200).json(data.rows);
   });
 };
+
+export const deleteGroup = (req, res) => {
+  const q = `
+  DELETE FROM groups WHERE id = $1
+`;
+  db.query(q, [req.query.groupId], (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.status(200).json("Deleted");
+  });
+};

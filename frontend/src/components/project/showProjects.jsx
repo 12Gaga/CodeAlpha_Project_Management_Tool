@@ -12,7 +12,7 @@ const ShowProjectPage = ({ projects }) => {
             key={p.id}
             style={{ textDecoration: "none" }}
           >
-            <Card sx={{ width: 250, mr: 2 }}>
+            <Card sx={{ width: 250, mr: 2, mt: 2 }}>
               <CardContent>
                 <Typography
                   variant="h6"

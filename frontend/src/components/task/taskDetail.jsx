@@ -6,29 +6,77 @@ import {
   Box,
   Typography,
   MenuItem,
-  Card,
-  CardContent,
-  TextField,
   Button,
+  FormControl,
+  InputLabel,
+  Select,
+  Chip,
 } from "@mui/material";
+import CommentPage from "./comment";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import DeleteTaskPage from "./deleteTask";
 
 const TaskDetailPage = () => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const { id } = useParams();
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState({});
   const [comments, setComments] = useState([]);
   const [click, setClick] = useState(false);
+  const [newstatus, setNewStatus] = useState("TO DO");
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const [newComment, setNewComment] = useState({
     desc: "",
     taskId: id,
     userId: currentUser.id,
   });
 
-  const handleAddComment = async () => {
+  const status = ["TO DO", "PROGRESS", "DONE"];
+  const getColor = (status) => {
+    if (status) {
+      switch (status.trim()) {
+        case "DONE":
+          return "success";
+        case "PROGRESS":
+          return "primary";
+        default:
+          return "default";
+      }
+    } else {
+      return "default";
+    }
+  };
+
+  async function fetchData() {
     try {
-      const res = await axios.post(
-        "http://localhost:5000/comment/createComment",
-        newComment,
+      const res = await axios.get("http://localhost:5000/task/getTask", {
+        params: { taskId: id },
+        headers: { "Content-Type": "application/json" },
+      });
+
+      console.log("Response:", res.data);
+      setTasks(res.data);
+      setNewStatus(res.data.status.trim());
+    } catch (err) {
+      console.error(err);
+    }
+    try {
+      const res = await axios.get("http://localhost:5000/comment/getComments", {
+        params: { taskId: id },
+        headers: { "Content-Type": "application/json" },
+      });
+
+      console.log("Response:", res.data);
+      setComments(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  const handleClick = async (status) => {
+    try {
+      const res = await axios.put(
+        "http://localhost:5000/task/updateStatus",
+        { status: status, taskId: id },
         {
           headers: {
             "Content-Type": "application/json",
@@ -37,90 +85,119 @@ const TaskDetailPage = () => {
       );
 
       console.log("Response:", res.data);
-      setComments([...comments, res.data]);
-      setNewComment({ ...newComment, desc: "" });
+      fetchData();
     } catch (err) {
       console.error(err);
     }
   };
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await axios.get("http://localhost:5000/task/getTask", {
-          params: { taskId: id },
-          headers: { "Content-Type": "application/json" },
-        });
-
-        console.log("Response:", res.data);
-        setTasks(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-      try {
-        const res = await axios.get(
-          "http://localhost:5000/comment/getComments",
-          {
-            params: { taskId: id },
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-
-        console.log("Response:", res.data);
-        setComments(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    }
     fetchData();
   }, []);
+
   return (
     <>
-      <Box sx={{ display: "flex" }}>
-        <Link to={`/projects`} style={{ textDecoration: "none" }}>
-          <Typography sx={{ mr: 2 }}>Projects</Typography>
-        </Link>
-        <Link to={`/tasks`} style={{ textDecoration: "none" }}>
-          <Typography>My Tasks</Typography>
-        </Link>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Box sx={{ display: "flex" }}>
+          <Link to={`/projects`} style={{ textDecoration: "none" }}>
+            <Typography sx={{ mr: 2 }}>Projects</Typography>
+          </Link>
+          <Link to={`/tasks`} style={{ textDecoration: "none" }}>
+            <Typography>My Tasks</Typography>
+          </Link>
+        </Box>
+        <Box>
+          <DeleteOutlineIcon
+            sx={{ fontSize: 25, color: "red" }}
+            onClick={() => {
+              setDeleteOpen(true);
+            }}
+          />
+        </Box>
       </Box>
-      {tasks.length > 0 && (
+      {tasks && (
         <>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography>Task Name - {tasks[0].name}</Typography>
+            <Typography>Task Name - {tasks.name}</Typography>
             <Typography>
-              Created Time - {moment(tasks[0].createdAt).fromNow()}
+              Created Time - {moment(tasks.createdAt).fromNow()}
             </Typography>
-            {moment(tasks[0].deadline).diff(moment(), "days") >= 0 ? (
+            {moment(tasks.deadline).diff(moment(), "days") >= 0 ? (
               <Typography>
-                Deadline : {moment(tasks[0].deadline).diff(moment(), "days")}{" "}
+                Deadline : {moment(tasks.deadline).diff(moment(), "days")}{" "}
                 day(s) left
               </Typography>
             ) : (
               <Typography style={{ color: "red" }}>
                 Deadline passed :
-                {Math.abs(moment(tasks[0].deadline).diff(moment(), "days"))}{" "}
-                day(s) ago
+                {Math.abs(moment(tasks.deadline).diff(moment(), "days"))} day(s)
+                ago
               </Typography>
             )}
           </Box>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Typography>Assignee : </Typography>
-            <MenuItem sx={{ p: 0, py: 1, ml: 1 }}>
-              <img
-                src={tasks[0].assigneeUserPic}
-                style={{
-                  width: "27px",
-                  height: "27px",
-                  borderRadius: "100%",
-                  marginRight: "8px",
-                }}
-              />
-              {tasks[0].assigneeUserName}
-            </MenuItem>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Typography>Assignee : </Typography>
+              <MenuItem sx={{ p: 0, py: 1, ml: 1 }}>
+                <img
+                  src={tasks.assigneeUserPic}
+                  style={{
+                    width: "27px",
+                    height: "27px",
+                    borderRadius: "100%",
+                    marginRight: "8px",
+                  }}
+                />
+                {tasks.assigneeUserName}
+              </MenuItem>
+            </Box>
+
+            {currentUser.id == tasks.userId && (
+              <Box>
+                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <InputLabel id="demo-select-small-label">Status</InputLabel>
+                  <Select
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    value={newstatus}
+                    label="Status"
+                    onChange={(e) => {
+                      setNewStatus(e.target.value);
+                      handleClick(e.target.value);
+                    }}
+                  >
+                    {status.map((s) => (
+                      <MenuItem value={s}>{s}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Box>
+            )}
           </Box>
-          <Typography>Description - {tasks[0].desc}</Typography>
-          <Typography>Priorities - {tasks[0].priorities}</Typography>
+
+          <Typography>Description - {tasks.desc}</Typography>
+          <Typography>Priorities - {tasks.priorities}</Typography>
+          <Typography>
+            Status :{" "}
+            <Chip
+              label={tasks.status}
+              color={tasks && getColor(tasks.status)}
+            />
+          </Typography>
+
+          {/* Comments */}
           <Button
             sx={{ mt: 2 }}
             fullWidth
@@ -131,101 +208,21 @@ const TaskDetailPage = () => {
           >
             Comment
           </Button>
-          {/* Comments */}
-          <Box
-            sx={{
-              display: click ? "block" : "none",
-              height: 500,
-              overflow: "scroll",
-            }}
-          >
-            <Card fullWidth sx={{ margin: "auto", p: 2 }}>
-              <CardContent>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    mb: 5,
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <img
-                      src={currentUser.profilePic}
-                      style={{
-                        width: "27px",
-                        height: "27px",
-                        borderRadius: "100%",
-                        marginRight: "8px",
-                      }}
-                    />
-                    <Typography>{currentUser.username}</Typography>
-                  </Box>
-                  <TextField
-                    value={newComment.desc}
-                    sx={{ width: 1020, mx: 3 }}
-                    label="Your comment"
-                    variant="outlined"
-                    onChange={(e) =>
-                      setNewComment({ ...newComment, desc: e.target.value })
-                    }
-                  />
 
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleAddComment}
-                  >
-                    Send
-                  </Button>
-                </Box>
-
-                {comments.length > 0 && (
-                  <Box sx={{}}>
-                    {comments.map((c) => (
-                      <Card key={c.id} sx={{ my: 1, p: 1 }}>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              display: "flex",
-                              alignItems: "center",
-                            }}
-                          >
-                            <img
-                              src={c.profilePic}
-                              style={{
-                                width: "27px",
-                                height: "27px",
-                                borderRadius: "100%",
-                                marginRight: "8px",
-                              }}
-                            />
-                            <Typography>{c.username}</Typography>
-                          </Box>
-                          <Typography variant="body2">
-                            {moment(c.createdAt).fromNow()}
-                          </Typography>
-                        </Box>
-                        <Typography variant="body2" sx={{ mt: 3, ml: 4 }}>
-                          {c.desc}
-                        </Typography>
-                      </Card>
-                    ))}
-                  </Box>
-                )}
-              </CardContent>
-            </Card>
-          </Box>
+          <CommentPage
+            comments={comments}
+            setComments={setComments}
+            newComment={newComment}
+            setNewComment={setNewComment}
+            click={click}
+            taskId={id}
+          />
+          <DeleteTaskPage
+            deleteOpen={deleteOpen}
+            setDeleteOpen={setDeleteOpen}
+            taskName={tasks.name}
+            taskId={id}
+          />
         </>
       )}
     </>

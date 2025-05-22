@@ -6,48 +6,66 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Typography, Box, Paper, Button, MenuItem } from "@mui/material";
 import CreateProject from "../../components/project/createProject";
 import ShowProjectPage from "../../components/project/showProjects";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import DeleteGroupPage from "../../components/group/deleteGroup";
 
 const GroupDetail = () => {
   const { id } = useParams();
   const [members, setMembers] = useState([]);
   const [projects, setProjects] = useState([]);
   const [open, setOpen] = useState(false);
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await axios.get("http://localhost:5000/group/getGroup", {
-          params: { groupId: id },
-          headers: { "Content-Type": "application/json" },
-        });
+  const [deleteOpen, setDeleteOpen] = useState(false);
 
-        console.log("Response:", res.data);
-        setMembers(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-      try {
-        const res = await axios.get(
-          "http://localhost:5000/project/getProjects",
-          {
-            params: { groupId: id },
-            headers: { "Content-Type": "application/json" },
-          }
-        );
+  async function fetchData() {
+    try {
+      const res = await axios.get("http://localhost:5000/group/getGroup", {
+        params: { groupId: id },
+        headers: { "Content-Type": "application/json" },
+      });
 
-        console.log("Response:", res.data);
-        setProjects(res.data);
-      } catch (err) {
-        console.error(err);
-      }
+      console.log("Response:", res.data);
+      setMembers(res.data);
+    } catch (err) {
+      console.error(err);
     }
+    try {
+      const res = await axios.get("http://localhost:5000/project/getProjects", {
+        params: { groupId: id },
+        headers: { "Content-Type": "application/json" },
+      });
+
+      console.log("Response:", res.data);
+      setProjects(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  useEffect(() => {
     fetchData();
   }, []);
   console.log("members", members);
   return (
     <>
-      <Link to={`/groups`} style={{ textDecoration: "none" }}>
-        <ArrowBackIosIcon sx={{ mb: 5 }} />
-      </Link>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Link to={`/groups`} style={{ textDecoration: "none" }}>
+          <ArrowBackIosIcon sx={{ mb: 5 }} />
+        </Link>
+        <Box>
+          <DeleteOutlineIcon
+            sx={{ fontSize: 25, color: "red" }}
+            onClick={() => {
+              setDeleteOpen(true);
+            }}
+          />
+        </Box>
+      </Box>
+
       {/* Show Group Info */}
       {members.length > 0 && (
         <>
@@ -76,26 +94,36 @@ const GroupDetail = () => {
               </MenuItem>
             </Paper>
           ))}
+          <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                setOpen(true);
+              }}
+            >
+              Add Project
+            </Button>
+          </Box>
+
+          {/* Show Projects Of This Group*/}
+          <Typography variant="h5" sx={{ textDecoration: "underline", my: 5 }}>
+            Projects
+          </Typography>
+          <ShowProjectPage projects={projects} />
+          <CreateProject
+            open={open}
+            setOpen={setOpen}
+            groupId={id}
+            fetchData={fetchData}
+          />
+          <DeleteGroupPage
+            deleteOpen={deleteOpen}
+            setDeleteOpen={setDeleteOpen}
+            groupName={members[0].groupName}
+            groupId={id}
+          />
         </>
       )}
-
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
-        <Button
-          variant="contained"
-          onClick={() => {
-            setOpen(true);
-          }}
-        >
-          Add Project
-        </Button>
-      </Box>
-
-      {/* Show Projects Of This Group*/}
-      <Typography variant="h5" sx={{ textDecoration: "underline", my: 5 }}>
-        Projects
-      </Typography>
-      <ShowProjectPage projects={projects} />
-      <CreateProject open={open} setOpen={setOpen} groupId={id} />
     </>
   );
 };

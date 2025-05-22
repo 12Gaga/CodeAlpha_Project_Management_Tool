@@ -18,7 +18,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-const CreateTask = ({ open, setOpen, projectId, memberIds }) => {
+const CreateTask = ({ open, setOpen, projectId, memberIds, fetchData }) => {
   const currentDate = dayjs();
   const [taskDetail, setTaskDetail] = useState({
     name: "",
@@ -47,7 +47,17 @@ const CreateTask = ({ open, setOpen, projectId, memberIds }) => {
       );
 
       console.log("Response:", res.data);
-      window.location.reload();
+      setOpen(false);
+      setTaskDetail({
+        name: "",
+        desc: "",
+        deadline: dayjs(),
+        priorities: "",
+        status: "TO DO",
+        memberId: 0,
+        projectId,
+      });
+      fetchData();
     } catch (err) {
       console.error("Login failed", err);
     }
@@ -60,6 +70,15 @@ const CreateTask = ({ open, setOpen, projectId, memberIds }) => {
         open={open}
         onClose={() => {
           setOpen(false);
+          setTaskDetail({
+            name: "",
+            desc: "",
+            deadline: dayjs(),
+            priorities: "",
+            status: "TO DO",
+            memberId: 0,
+            projectId,
+          });
         }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -149,6 +168,15 @@ const CreateTask = ({ open, setOpen, projectId, memberIds }) => {
             variant="outlined"
             onClick={() => {
               setOpen(false);
+              setTaskDetail({
+                name: "",
+                desc: "",
+                deadline: dayjs(),
+                priorities: "",
+                status: "TO DO",
+                memberId: 0,
+                projectId,
+              });
             }}
           >
             Close

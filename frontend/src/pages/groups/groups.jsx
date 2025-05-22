@@ -25,21 +25,20 @@ const GroupPage = () => {
     });
     setGroups(temp);
   };
+  async function fetchData() {
+    try {
+      const res = await axios.get("http://localhost:5000/group/getGroups", {
+        params: { userId: currentUser.id },
+        headers: { "Content-Type": "application/json" },
+      });
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await axios.get("http://localhost:5000/group/getGroups", {
-          params: { userId: currentUser.id },
-          headers: { "Content-Type": "application/json" },
-        });
-
-        console.log("Response:", res.data);
-        finalGroup(res.data);
-      } catch (err) {
-        console.error(err);
-      }
+      console.log("Response:", res.data);
+      finalGroup(res.data);
+    } catch (err) {
+      console.error(err);
     }
+  }
+  useEffect(() => {
     fetchData();
   }, []);
   return (
@@ -92,7 +91,7 @@ const GroupPage = () => {
             </Link>
           ))}
       </Box>
-      <CreateGroupPage open={open} setOpen={setOpen} />
+      <CreateGroupPage open={open} setOpen={setOpen} fetchData={fetchData} />
     </>
   );
 };

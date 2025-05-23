@@ -1,5 +1,5 @@
 import { GoogleLogin } from "@react-oauth/google";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 const LogInPage = () => {
@@ -27,6 +27,13 @@ const LogInPage = () => {
   };
   return (
     <>
+      <Box
+        sx={{
+          backgroundColor: "primary.main",
+        }}
+      >
+        <img src="Kollab.png" style={{ width: 130, height: 100 }} />
+      </Box>
       <Box
         sx={{
           display: "flex",

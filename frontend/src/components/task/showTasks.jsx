@@ -27,7 +27,13 @@ const ShowTaskPage = ({ tasks }) => {
           const daysLeft = moment(t.deadline).diff(moment(), "days");
           return (
             <Link to={`/task/${t.id}`} style={{ textDecoration: "none" }}>
-              <Card sx={{ width: 300, mr: 2, mt: 2 }}>
+              <Card
+                sx={{
+                  width: { xs: 250, md: 300 },
+                  mr: 2,
+                  mt: { xs: 1.5, md: 2 },
+                }}
+              >
                 <CardContent>
                   <Box
                     sx={{
@@ -37,17 +43,30 @@ const ShowTaskPage = ({ tasks }) => {
                     }}
                   >
                     <Typography
-                      variant="h6"
-                      sx={{ color: "text.secondary", mb: 1.5 }}
+                      sx={{
+                        color: "text.secondary",
+                        mb: 1.5,
+                        fontSize: { xs: 17, md: 20 },
+                      }}
                     >
                       {t.name}
                     </Typography>
-                    <Chip label={t.status} color={getColor(t.status)} />
+                    <Chip
+                      label={t.status}
+                      color={getColor(t.status)}
+                      sx={{ fontSize: { xs: 10, md: 12 } }}
+                    />
                   </Box>
-                  <Typography sx={{ color: "text.secondary", mb: 1.5 }}>
+                  <Typography
+                    sx={{
+                      color: "text.secondary",
+                      mb: 1.5,
+                      fontSize: { xs: 14, md: 16 },
+                    }}
+                  >
                     Assignee
                   </Typography>
-                  <MenuItem sx={{ p: 0, py: 1 }}>
+                  <MenuItem sx={{ p: 0, py: 1, fontSize: { xs: 14, md: 16 } }}>
                     <img
                       src={t.profilePic}
                       style={{
@@ -59,13 +78,30 @@ const ShowTaskPage = ({ tasks }) => {
                     />
                     {t.username}
                   </MenuItem>
-                  <Typography>
+                  <Typography
+                    sx={{
+                      fontSize: { xs: 14, md: 16 },
+                      color: "secondary.main",
+                    }}
+                  >
                     Deadline: {moment(t.deadline).format("DD MMM YYYY")}
                   </Typography>
                   {daysLeft >= 0 ? (
-                    <Typography>{daysLeft} day(s) left</Typography>
+                    <Typography
+                      sx={{
+                        fontSize: { xs: 14, md: 16 },
+                        color: "secondary.main",
+                      }}
+                    >
+                      {daysLeft} day(s) left
+                    </Typography>
                   ) : (
-                    <Typography style={{ color: "red" }}>
+                    <Typography
+                      sx={{
+                        fontSize: { xs: 14, md: 16 },
+                        color: "secondary.main",
+                      }}
+                    >
                       Deadline passed {Math.abs(daysLeft)} day(s) ago
                     </Typography>
                   )}

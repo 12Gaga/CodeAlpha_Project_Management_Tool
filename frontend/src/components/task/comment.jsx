@@ -76,7 +76,7 @@ const CommentPage = ({
 
   const handleCommentUpdate = (commentId, commentDesc) => {
     setUpdateId(commentId);
-    setUpdateDesc(commentDesc);
+    setUpdateDesc(commentDesc.trim());
   };
 
   const handleCommentDelete = async (commentId) => {
@@ -108,7 +108,7 @@ const CommentPage = ({
       <Box
         sx={{
           display: click ? "block" : "none",
-          height: 500,
+          height: { md: 350, lg: 500 },
           overflow: "scroll",
           scrollbarWidth: "none",
           msOverflowStyle: "none",
@@ -130,7 +130,7 @@ const CommentPage = ({
             >
               <Box
                 sx={{
-                  display: "flex",
+                  display: { xs: "none", sm: "flex" },
                   alignItems: "center",
                 }}
               >
@@ -143,15 +143,20 @@ const CommentPage = ({
                     marginRight: "8px",
                   }}
                 />
-                <Typography>{currentUser.username}</Typography>
+                <Typography sx={{ fontSize: { xs: 14, md: 17 } }}>
+                  {currentUser.username}
+                </Typography>
               </Box>
               <TextField
                 value={
                   comments.map((c) => c.id).includes(updateId)
-                    ? updateDesc.trim()
+                    ? updateDesc
                     : newComment.desc
                 }
-                sx={{ width: "65%", mx: 3 }}
+                sx={{
+                  width: { xs: "45%", sm: "58%", md: "48%", lg: "65%" },
+                  mx: 3,
+                }}
                 label="Your comment"
                 variant="outlined"
                 onChange={(e) => {
@@ -167,6 +172,11 @@ const CommentPage = ({
                 variant="contained"
                 color="primary"
                 onClick={handleAddComment}
+                sx={{
+                  fontSize: { xs: 11, md: 14 },
+                  bgcolor: "secondary.main",
+                  color: "info.main",
+                }}
               >
                 Send
               </Button>
@@ -201,10 +211,15 @@ const CommentPage = ({
                             marginRight: "8px",
                           }}
                         />
-                        <Typography>{c.username}</Typography>
+                        <Typography sx={{ fontSize: { xs: 14, md: 17 } }}>
+                          {c.username}
+                        </Typography>
                       </Box>
                       <Box sx={{ display: "flex" }}>
-                        <Typography variant="body2">
+                        <Typography
+                          variant="body2"
+                          sx={{ fontSize: { xs: 12, md: 14 } }}
+                        >
                           {moment(c.createdAt).fromNow()}
                         </Typography>
                         <MoreVertIcon
@@ -219,25 +234,31 @@ const CommentPage = ({
                             id={c.id}
                             sx={{
                               position: "absolute",
-                              top: 45,
+                              top: { xs: 35, sm: 45 },
                               mt: 1,
                               right: 1,
                             }}
                           >
                             <MenuItem
+                              sx={{ fontSize: 14 }}
                               onClick={() => {
                                 handleCommentUpdate(c.id, c.desc);
                               }}
                             >
-                              <EditIcon sx={{ fontSize: 19, mr: 1 }} />
+                              <EditIcon
+                                sx={{ fontSize: { xs: 14, md: 19 }, mr: 1 }}
+                              />
                               Edit
                             </MenuItem>
                             <MenuItem
+                              sx={{ fontSize: 14 }}
                               onClick={() => {
                                 handleCommentDelete(c.id);
                               }}
                             >
-                              <DeleteIcon sx={{ fontSize: 19, mr: 1 }} />
+                              <DeleteIcon
+                                sx={{ fontSize: { xs: 14, md: 19 }, mr: 1 }}
+                              />
                               Delete
                             </MenuItem>
                           </Card>

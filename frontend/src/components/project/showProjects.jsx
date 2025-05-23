@@ -12,15 +12,31 @@ const ShowProjectPage = ({ projects }) => {
             key={p.id}
             style={{ textDecoration: "none" }}
           >
-            <Card sx={{ width: 250, mr: 2, mt: 2 }}>
+            <Card
+              sx={{
+                width: { xs: 190, sm: 250 },
+                mr: 2,
+                mt: { xs: 1.5, md: 2 },
+              }}
+            >
               <CardContent>
                 <Typography
                   variant="h6"
-                  sx={{ color: "text.secondary", mb: 1.5 }}
+                  sx={{
+                    color: "text.secondary",
+                    mb: 1.5,
+                    fontSize: { xs: 18, md: 20 },
+                  }}
                 >
                   {p.name}
                 </Typography>
-                <Typography sx={{ color: "text.secondary", mb: 1.5 }}>
+                <Typography
+                  sx={{
+                    color: "text.secondary",
+                    mb: 1.5,
+                    fontSize: { xs: 15, md: 18 },
+                  }}
+                >
                   {moment(p.createdAt).fromNow()}
                 </Typography>
               </CardContent>

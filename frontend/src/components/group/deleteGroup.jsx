@@ -37,7 +37,9 @@ const DeleteGroupPage = ({ deleteOpen, setDeleteOpen, groupName, groupId }) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogContent>
-          <Typography variant="h6">
+          <Typography
+            sx={{ fontSize: { xs: 15, md: 18 }, color: "secondary.main" }}
+          >
             Are you sure want to delete group {groupName} ? All the data
             (Projects , Tasks ) deal with group {groupName} will be deleted.
           </Typography>
@@ -49,10 +51,23 @@ const DeleteGroupPage = ({ deleteOpen, setDeleteOpen, groupName, groupId }) => {
             onClick={() => {
               setDeleteOpen(false);
             }}
+            sx={{
+              fontSize: { xs: 11, md: 14 },
+              borderColor: "secondary.main",
+              color: "secondary.main",
+            }}
           >
             Close
           </Button>
-          <Button variant="contained" onClick={handleClick}>
+          <Button
+            variant="contained"
+            onClick={handleClick}
+            sx={{
+              fontSize: { xs: 11, md: 14 },
+              bgcolor: "secondary.main",
+              color: "info.main",
+            }}
+          >
             YES
           </Button>
         </DialogActions>

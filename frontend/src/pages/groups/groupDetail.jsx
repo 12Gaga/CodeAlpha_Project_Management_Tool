@@ -54,7 +54,7 @@ const GroupDetail = () => {
         }}
       >
         <Link to={`/groups`} style={{ textDecoration: "none" }}>
-          <ArrowBackIosIcon sx={{ mb: 5 }} />
+          <ArrowBackIosIcon sx={{ mb: 5, color: "secondary.main" }} />
         </Link>
         <Box>
           <DeleteOutlineIcon
@@ -69,18 +69,30 @@ const GroupDetail = () => {
       {/* Show Group Info */}
       {members.length > 0 && (
         <>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography>Group Name - {members[0].groupName}</Typography>
-            <Typography>
+          <Box
+            sx={{
+              display: { xs: "block", sm: "flex" },
+              justifyContent: "space-between",
+              color: "secondary.main",
+            }}
+          >
+            <Typography sx={{ fontSize: { xs: 18, sm: 20, lg: 25 } }}>
+              Group Name - {members[0].groupName}
+            </Typography>
+            <Typography
+              sx={{
+                my: { xs: 1, sm: 0 },
+              }}
+            >
               Created Time - {moment(members[0].createdTime).fromNow()}
             </Typography>
           </Box>
 
-          <Typography>Group Members </Typography>
+          <Typography color="secondary.main">Group Members </Typography>
 
           {members.map((m) => (
             <Paper>
-              <MenuItem key={m.id} sx={{ width: 300, mt: 1 }}>
+              <MenuItem key={m.id} sx={{ mt: 1 }}>
                 <img
                   src={m.profilePic}
                   style={{
@@ -100,13 +112,24 @@ const GroupDetail = () => {
               onClick={() => {
                 setOpen(true);
               }}
+              sx={{
+                bgcolor: "secondary.main",
+                color: "info.main",
+                fontSize: { xs: 13, md: 15 },
+              }}
             >
               Add Project
             </Button>
           </Box>
 
           {/* Show Projects Of This Group*/}
-          <Typography variant="h5" sx={{ textDecoration: "underline", my: 5 }}>
+          <Typography
+            sx={{
+              textDecoration: "underline",
+              my: { xs: 3, md: 4 },
+              fontSize: { xs: 20, md: 23 },
+            }}
+          >
             Projects
           </Typography>
           <ShowProjectPage projects={projects} />

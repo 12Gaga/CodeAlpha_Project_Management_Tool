@@ -45,13 +45,20 @@ const GroupPage = () => {
     <>
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <GroupAddIcon
-          sx={{ fontSize: 40 }}
+          sx={{ fontSize: { xs: 35, sm: 40 }, color: "secondary.main" }}
           onClick={() => {
             setOpen(true);
           }}
         />
       </Box>
-      <Typography variant="h5" sx={{ my: 4, textDecoration: "underline" }}>
+      <Typography
+        sx={{
+          my: 4,
+          textDecoration: "underline",
+          fontSize: { xs: 23, sm: 25 },
+        }}
+        color="secondary.main"
+      >
         Groups
       </Typography>
       <Box
@@ -69,7 +76,15 @@ const GroupPage = () => {
               key={g.id}
               style={{ textDecoration: "none" }}
             >
-              <Card sx={{ width: 150, mr: 3 }}>
+              <Card
+                sx={{
+                  width: { xs: 120, sm: 150 },
+                  mr: 3,
+                  bgcolor: "secondary.light",
+                  p: { xs: 1, md: 2 },
+                  mt: { xs: 1, sm: 2 },
+                }}
+              >
                 <CardActionArea
                   sx={{
                     height: "100%",
@@ -82,7 +97,11 @@ const GroupPage = () => {
                   }}
                 >
                   <CardContent sx={{ height: "100%" }}>
-                    <Typography variant="h5" component="div">
+                    <Typography
+                      component="div"
+                      color="info.main"
+                      sx={{ fontSize: { xs: 20, sm: 25 } }}
+                    >
                       {g.groupName}
                     </Typography>
                   </CardContent>

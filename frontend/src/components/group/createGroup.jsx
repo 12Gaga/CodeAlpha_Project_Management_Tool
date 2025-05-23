@@ -15,6 +15,8 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
+import PersonOffIcon from "@mui/icons-material/PersonOff";
+
 const CreateGroupPage = ({ open, setOpen, fetchData }) => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const [name, setName] = useState("");
@@ -79,20 +81,22 @@ const CreateGroupPage = ({ open, setOpen, fetchData }) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Create Group"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title" sx={{ color: "secondary.main" }}>
+          Create Group
+        </DialogTitle>
         <DialogContent>
           <TextField
             id="outlined-basic"
             label="Group Name"
             variant="outlined"
-            sx={{ width: 300, mt: 3 }}
+            sx={{ width: { xs: 210, sm: 300 }, mt: 3 }}
             onChange={(e) => {
               setName(e.target.value);
             }}
           />
           <Box
             sx={{
-              display: "flex",
+              display: { xs: "block", sm: "flex" },
               alignItems: "center",
             }}
           >
@@ -100,7 +104,7 @@ const CreateGroupPage = ({ open, setOpen, fetchData }) => {
               id="outlined-basic"
               label="Search Member"
               variant="outlined"
-              sx={{ width: 300, mt: 3 }}
+              sx={{ width: { xs: 210, sm: 300 }, mt: 3 }}
               onChange={(e) => {
                 setSearchName(e.target.value);
                 setExit(false);
@@ -110,7 +114,12 @@ const CreateGroupPage = ({ open, setOpen, fetchData }) => {
               variant="contained"
               size="small"
               onClick={findUser}
-              sx={{ mt: 3, ml: 2 }}
+              sx={{
+                mt: 3,
+                ml: { xs: 0, sm: 2 },
+                bgcolor: "secondary.main",
+                color: "info.main",
+              }}
             >
               Search
             </Button>
@@ -119,7 +128,9 @@ const CreateGroupPage = ({ open, setOpen, fetchData }) => {
           <Box sx={{ display: exit ? "block" : "none" }}>
             {exit &&
               (returnUser.length ? (
-                <Paper sx={{ width: 300 }}>
+                <Paper
+                  sx={{ width: { xs: 210, sm: 300 }, mt: { xs: 2, sm: 0 } }}
+                >
                   <MenuList>
                     {returnUser.map((user) => (
                       <MenuItem
@@ -143,17 +154,25 @@ const CreateGroupPage = ({ open, setOpen, fetchData }) => {
                   </MenuList>
                 </Paper>
               ) : (
-                <Typography sx={{ mt: 1.5 }}>User Not found</Typography>
+                <Typography sx={{ mt: 2, color: "secondary.main" }}>
+                  <PersonOffIcon /> User Not found !
+                </Typography>
               ))}
           </Box>
 
           {addMember.length > 0 && (
             <Box sx={{ mt: 3 }}>
-              <Paper sx={{ width: 300, padding: 3 }}>
+              <Paper
+                sx={{
+                  width: { xs: 210, sm: 300 },
+                  padding: { xs: 2, sm: 3 },
+                  bgcolor: "info.main",
+                }}
+              >
                 Group Members
                 {addMember.map((member) => (
                   <Chip
-                    sx={{ ml: 1 }}
+                    sx={{ ml: 1, mt: 1 }}
                     avatar={<Avatar alt="Natacha" src={member.profilePic} />}
                     label={member.username}
                     onDelete={() => {
@@ -171,6 +190,11 @@ const CreateGroupPage = ({ open, setOpen, fetchData }) => {
         </DialogContent>
         <DialogActions>
           <Button
+            sx={{
+              fontSize: { xs: 11, md: 14 },
+              borderColor: "secondary.main",
+              color: "secondary.main",
+            }}
             variant="outlined"
             onClick={() => {
               setOpen(false);
@@ -183,7 +207,15 @@ const CreateGroupPage = ({ open, setOpen, fetchData }) => {
           >
             Close
           </Button>
-          <Button variant="contained" onClick={handleClick}>
+          <Button
+            variant="contained"
+            onClick={handleClick}
+            sx={{
+              fontSize: { xs: 11, md: 14 },
+              bgcolor: "secondary.main",
+              color: "info.main",
+            }}
+          >
             Save
           </Button>
         </DialogActions>

@@ -51,8 +51,10 @@ const ProjectDetailPage = () => {
           alignItems: "center",
         }}
       >
-        <Link to={`/projects`} style={{ textDecoration: "none" }}>
-          <Typography sx={{ mr: 2 }}>Projects</Typography>
+        <Link to={`/projects`} style={{}}>
+          <Typography sx={{ mr: 2, color: "secondary.main", mb: 1 }}>
+            Projects
+          </Typography>
         </Link>
         <Box>
           <DeleteOutlineIcon
@@ -66,8 +68,12 @@ const ProjectDetailPage = () => {
       {projectInfo.length > 0 && (
         <>
           <Box>
-            <Typography>Project Name - {projectInfo[0].name}</Typography>
-            <Typography>Description - {projectInfo[0].desc}</Typography>
+            <Typography sx={{ fontSize: { xs: 18, sm: 20, lg: 25 } }}>
+              Project Name - {projectInfo[0].name}
+            </Typography>
+            <Typography sx={{ fontSize: { xs: 14, lg: 18 }, mt: 1 }}>
+              Description - {projectInfo[0].desc}
+            </Typography>
           </Box>
 
           <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 5 }}>
@@ -75,6 +81,11 @@ const ProjectDetailPage = () => {
               variant="contained"
               onClick={() => {
                 setOpen(true);
+              }}
+              sx={{
+                fontSize: { xs: 12, md: 14 },
+                bgcolor: "secondary.main",
+                color: "info.main",
               }}
             >
               Add Task
@@ -87,7 +98,13 @@ const ProjectDetailPage = () => {
             memberIds={projectInfo}
             fetchData={fetchData}
           />
-          <Typography variant="h5" sx={{ textDecoration: "underline", my: 5 }}>
+          <Typography
+            sx={{
+              textDecoration: "underline",
+              my: { xs: 3, md: 4 },
+              fontSize: { xs: 20, md: 23 },
+            }}
+          >
             Tasks
           </Typography>
           <ShowTaskPage tasks={tasks} />

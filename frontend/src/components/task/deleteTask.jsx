@@ -34,7 +34,9 @@ const DeleteTaskPage = ({ deleteOpen, setDeleteOpen, taskName, taskId }) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogContent>
-          <Typography variant="h6">
+          <Typography
+            sx={{ fontSize: { xs: 15, md: 18 }, color: "secondary.main" }}
+          >
             Are you sure want to delete task {taskName} ? All the data deal with
             task {taskName} will be deleted.
           </Typography>
@@ -46,10 +48,23 @@ const DeleteTaskPage = ({ deleteOpen, setDeleteOpen, taskName, taskId }) => {
             onClick={() => {
               setDeleteOpen(false);
             }}
+            sx={{
+              fontSize: { xs: 11, md: 14 },
+              borderColor: "secondary.main",
+              color: "secondary.main",
+            }}
           >
             Close
           </Button>
-          <Button variant="contained" onClick={handleClick}>
+          <Button
+            variant="contained"
+            onClick={handleClick}
+            sx={{
+              fontSize: { xs: 11, md: 14 },
+              bgcolor: "secondary.main",
+              color: "info.main",
+            }}
+          >
             YES
           </Button>
         </DialogActions>

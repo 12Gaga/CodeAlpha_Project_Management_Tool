@@ -105,11 +105,15 @@ const TaskDetailPage = () => {
         }}
       >
         <Box sx={{ display: "flex" }}>
-          <Link to={`/projects`} style={{ textDecoration: "none" }}>
-            <Typography sx={{ mr: 2 }}>Projects</Typography>
+          <Link to={`/projects`} style={{}}>
+            <Typography sx={{ mr: 2, color: "secondary.main", mb: 1 }}>
+              Projects
+            </Typography>
           </Link>
-          <Link to={`/tasks`} style={{ textDecoration: "none" }}>
-            <Typography>My Tasks</Typography>
+          <Link to={`/tasks`} style={{}}>
+            <Typography sx={{ color: "secondary.main", mb: 1 }}>
+              My Tasks
+            </Typography>
           </Link>
         </Box>
         <Box>
@@ -123,33 +127,49 @@ const TaskDetailPage = () => {
       </Box>
       {tasks && (
         <>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography>Task Name - {tasks.name}</Typography>
-            <Typography>
-              Created Time - {moment(tasks.createdAt).fromNow()}
+          <Box
+            sx={{
+              display: { xs: "block", sm: "flex" },
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography sx={{ fontSize: { xs: 18, sm: 20, lg: 25 } }}>
+              Task Name - {tasks.name}
             </Typography>
-            {moment(tasks.deadline).diff(moment(), "days") >= 0 ? (
-              <Typography>
-                Deadline : {moment(tasks.deadline).diff(moment(), "days")}{" "}
-                day(s) left
+            <Box>
+              <Typography
+                sx={{
+                  my: { xs: 1, sm: 0 },
+                  fontSize: { xs: 14, lg: 17 },
+                }}
+              >
+                Created Time - {moment(tasks.createdAt).fromNow()}
               </Typography>
-            ) : (
-              <Typography style={{ color: "red" }}>
-                Deadline passed :
-                {Math.abs(moment(tasks.deadline).diff(moment(), "days"))} day(s)
-                ago
-              </Typography>
-            )}
+              {moment(tasks.deadline).diff(moment(), "days") >= 0 ? (
+                <Typography sx={{ fontSize: { xs: 14, lg: 17 } }}>
+                  Deadline : {moment(tasks.deadline).diff(moment(), "days")}{" "}
+                  day(s) left
+                </Typography>
+              ) : (
+                <Typography sx={{ color: "red", fontSize: { xs: 14, lg: 17 } }}>
+                  Deadline passed :
+                  {Math.abs(moment(tasks.deadline).diff(moment(), "days"))}{" "}
+                  day(s) ago
+                </Typography>
+              )}
+            </Box>
           </Box>
           <Box
             sx={{
-              display: "flex",
+              display: { xs: "block", sm: "flex" },
               alignItems: "center",
               justifyContent: "space-between",
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Typography>Assignee : </Typography>
+              <Typography sx={{ fontSize: { xs: 14, lg: 17 } }}>
+                Assignee :{" "}
+              </Typography>
               <MenuItem sx={{ p: 0, py: 1, ml: 1 }}>
                 <img
                   src={tasks.assigneeUserPic}
@@ -167,8 +187,14 @@ const TaskDetailPage = () => {
             {currentUser.id == tasks.userId && (
               <Box>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                  <InputLabel id="demo-select-small-label">Status</InputLabel>
+                  <InputLabel
+                    id="demo-select-small-label"
+                    sx={{ fontSize: { xs: 14, lg: 17 } }}
+                  >
+                    Status
+                  </InputLabel>
                   <Select
+                    sx={{ fontSize: { xs: 12, lg: 14 } }}
                     labelId="demo-select-small-label"
                     id="demo-select-small"
                     value={newstatus}
@@ -179,7 +205,9 @@ const TaskDetailPage = () => {
                     }}
                   >
                     {status.map((s) => (
-                      <MenuItem value={s}>{s}</MenuItem>
+                      <MenuItem value={s} sx={{ fontSize: { xs: 12, lg: 14 } }}>
+                        {s}
+                      </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
@@ -187,11 +215,16 @@ const TaskDetailPage = () => {
             )}
           </Box>
 
-          <Typography>Description - {tasks.desc}</Typography>
-          <Typography>Priorities - {tasks.priorities}</Typography>
-          <Typography>
+          <Typography sx={{ fontSize: { xs: 14, lg: 17 }, my: 1 }}>
+            Description - {tasks.desc}
+          </Typography>
+          <Typography sx={{ fontSize: { xs: 14, lg: 17 }, mb: 1 }}>
+            Priorities - {tasks.priorities}
+          </Typography>
+          <Typography sx={{ fontSize: { xs: 14, lg: 17 } }}>
             Status :{" "}
             <Chip
+              sx={{ fontSize: { xs: 10, md: 12 } }}
               label={tasks.status}
               color={tasks && getColor(tasks.status)}
             />

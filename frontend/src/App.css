@@ -37,6 +37,6 @@
   }
 }
 
-.middle::-webkit-scrollbar {
-  display: none;
+body {
+  background-color: #f2f6df;
 }

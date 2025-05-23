@@ -54,13 +54,15 @@ const CreateProject = ({ open, setOpen, groupId, fetchData }) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Create Project</DialogTitle>
+        <DialogTitle id="alert-dialog-title" color="secondary.main">
+          Create Project
+        </DialogTitle>
         <DialogContent>
           <TextField
             id="outlined-basic"
             label="Project Name"
             variant="outlined"
-            sx={{ width: 300, mt: 3 }}
+            sx={{ width: { xs: 210, sm: 300 }, mt: 3 }}
             onChange={(e) => {
               setProjectDetail({ ...projectDetail, name: e.target.value });
             }}
@@ -69,7 +71,7 @@ const CreateProject = ({ open, setOpen, groupId, fetchData }) => {
             id="outlined-basic"
             label="Project Description"
             variant="outlined"
-            sx={{ width: 300, mt: 3 }}
+            sx={{ width: { xs: 210, sm: 300 }, mt: 3 }}
             onChange={(e) => {
               setProjectDetail({ ...projectDetail, desc: e.target.value });
             }}
@@ -86,10 +88,23 @@ const CreateProject = ({ open, setOpen, groupId, fetchData }) => {
                 groupId,
               });
             }}
+            sx={{
+              fontSize: { xs: 11, md: 14 },
+              borderColor: "secondary.main",
+              color: "secondary.main",
+            }}
           >
             Close
           </Button>
-          <Button onClick={handleClick} variant="contained">
+          <Button
+            onClick={handleClick}
+            variant="contained"
+            sx={{
+              fontSize: { xs: 11, md: 14 },
+              bgcolor: "secondary.main",
+              color: "info.main",
+            }}
+          >
             Save
           </Button>
         </DialogActions>

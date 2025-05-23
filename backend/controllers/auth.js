@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 
 export const getGoogleUser = async (req, res) => {
   const { token } = req.body;
-  console.log("Received token:", token);
 
   if (!token) {
     return res.status(400).json({ error: "Token is required" });

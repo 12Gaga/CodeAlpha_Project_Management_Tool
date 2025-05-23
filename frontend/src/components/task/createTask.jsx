@@ -83,7 +83,9 @@ const CreateTask = ({ open, setOpen, projectId, memberIds, fetchData }) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Create Task</DialogTitle>
+        <DialogTitle id="alert-dialog-title" color="secondary.main">
+          Create Task
+        </DialogTitle>
         <DialogContent>
           <TextField
             fullWidth
@@ -178,10 +180,23 @@ const CreateTask = ({ open, setOpen, projectId, memberIds, fetchData }) => {
                 projectId,
               });
             }}
+            sx={{
+              fontSize: { xs: 11, md: 14 },
+              borderColor: "secondary.main",
+              color: "secondary.main",
+            }}
           >
             Close
           </Button>
-          <Button onClick={handleClick} variant="contained">
+          <Button
+            onClick={handleClick}
+            variant="contained"
+            sx={{
+              fontSize: { xs: 11, md: 14 },
+              bgcolor: "secondary.main",
+              color: "info.main",
+            }}
+          >
             Save
           </Button>
         </DialogActions>

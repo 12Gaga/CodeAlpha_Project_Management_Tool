@@ -42,7 +42,9 @@ const DeleteProjectPage = ({
         aria-describedby="alert-dialog-description"
       >
         <DialogContent>
-          <Typography variant="h6">
+          <Typography
+            sx={{ fontSize: { xs: 15, md: 18 }, color: "secondary.main" }}
+          >
             Are you sure want to delete project {projectname} ? All the data
             (Tasks ) deal with project {projectname} will be deleted.
           </Typography>
@@ -54,10 +56,23 @@ const DeleteProjectPage = ({
             onClick={() => {
               setDeleteOpen(false);
             }}
+            sx={{
+              fontSize: { xs: 11, md: 14 },
+              borderColor: "secondary.main",
+              color: "secondary.main",
+            }}
           >
             Close
           </Button>
-          <Button variant="contained" onClick={handleClick}>
+          <Button
+            variant="contained"
+            onClick={handleClick}
+            sx={{
+              fontSize: { xs: 11, md: 14 },
+              bgcolor: "secondary.main",
+              color: "info.main",
+            }}
+          >
             YES
           </Button>
         </DialogActions>

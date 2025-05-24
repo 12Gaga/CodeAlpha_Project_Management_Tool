@@ -8,6 +8,10 @@ import CreateProject from "../../components/project/createProject";
 import ShowProjectPage from "../../components/project/showProjects";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import DeleteGroupPage from "../../components/group/deleteGroup";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import { Config } from "../../config";
+import AddMemberPage from "../../components/group/addMember";
+import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
 
 const GroupDetail = () => {
   const { id } = useParams();
@@ -15,10 +19,11 @@ const GroupDetail = () => {
   const [projects, setProjects] = useState([]);
   const [open, setOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [adddMemberOpen, setAddMemberOpen] = useState(false);
 
   async function fetchData() {
     try {
-      const res = await axios.get("http://localhost:5000/group/getGroup", {
+      const res = await axios.get(`${Config.apiBaseUrl}/group/getGroup`, {
         params: { groupId: id },
         headers: { "Content-Type": "application/json" },
       });
@@ -29,7 +34,7 @@ const GroupDetail = () => {
       console.error(err);
     }
     try {
-      const res = await axios.get("http://localhost:5000/project/getProjects", {
+      const res = await axios.get(`${Config.apiBaseUrl}/project/getProjects`, {
         params: { groupId: id },
         headers: { "Content-Type": "application/json" },
       });
@@ -40,6 +45,24 @@ const GroupDetail = () => {
       console.error(err);
     }
   }
+
+  const handleRemoveMember = async (memberId) => {
+    try {
+      const res = await axios.delete(
+        `${Config.apiBaseUrl}/group/removeMember`,
+        {
+          params: { groupId: id, memberId },
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      console.log("Response:", res.data);
+      fetchData();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -57,6 +80,12 @@ const GroupDetail = () => {
           <ArrowBackIosIcon sx={{ mb: 5, color: "secondary.main" }} />
         </Link>
         <Box>
+          <GroupAddIcon
+            sx={{ fontSize: 25, color: "secondary.main" }}
+            onClick={() => {
+              setAddMemberOpen(true);
+            }}
+          />
           <DeleteOutlineIcon
             sx={{ fontSize: 25, color: "red" }}
             onClick={() => {
@@ -92,7 +121,7 @@ const GroupDetail = () => {
 
           {members.map((m) => (
             <Paper>
-              <MenuItem key={m.id} sx={{ mt: 1 }}>
+              <MenuItem key={m.id} sx={{ mt: 1, position: "relative" }}>
                 <img
                   src={m.profilePic}
                   style={{
@@ -103,6 +132,11 @@ const GroupDetail = () => {
                   }}
                 />
                 {m.username}
+                <Box sx={{ position: "absolute", right: 5 }}>
+                  <GroupRemoveIcon
+                    onClick={() => handleRemoveMember(m.userId)}
+                  />
+                </Box>
               </MenuItem>
             </Paper>
           ))}
@@ -144,6 +178,12 @@ const GroupDetail = () => {
             setDeleteOpen={setDeleteOpen}
             groupName={members[0].groupName}
             groupId={id}
+          />
+          <AddMemberPage
+            setAddMemberOpen={setAddMemberOpen}
+            addMemberOpen={adddMemberOpen}
+            groupId={id}
+            fetchData={fetchData}
           />
         </>
       )}

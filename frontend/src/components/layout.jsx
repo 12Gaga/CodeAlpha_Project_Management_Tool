@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import GroupIcon from "@mui/icons-material/Group";
 import AccountTreeIcon from "@mui/icons-material/AccountTree";
+import TaskIcon from "@mui/icons-material/Task";
 import { Outlet } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useState } from "react";
@@ -15,7 +16,7 @@ const Layout = () => {
     { id: 1, label: "Dashboard", icon: <DashboardIcon />, route: "/dashboard" },
     { id: 2, label: "Groups", icon: <GroupIcon />, route: "/groups" },
     { id: 3, label: "Projects", icon: <AccountTreeIcon />, route: "/projects" },
-    { id: 4, label: "My Tasks", icon: <AccountTreeIcon />, route: "/tasks" },
+    { id: 4, label: "My Tasks", icon: <TaskIcon />, route: "/tasks" },
   ];
 
   const handleLogOut = () => {
@@ -32,7 +33,13 @@ const Layout = () => {
           backgroundColor: "primary.main",
         }}
       >
-        <img style={{ width: "130px", height: "100px" }} src="Kollab.png" />
+        <Box
+          sx={{
+            backgroundColor: "primary.main",
+          }}
+        >
+          <img src="Kollab.png" style={{ width: 130, height: 100 }} />
+        </Box>
         <Button
           variant="contained"
           onClick={handleLogOut}

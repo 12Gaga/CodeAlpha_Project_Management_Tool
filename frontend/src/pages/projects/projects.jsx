@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import ShowProjectPage from "../../components/project/showProjects";
+import { Config } from "../../config";
 
 const ProjectPage = () => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -10,7 +11,7 @@ const ProjectPage = () => {
     async function fetchData() {
       try {
         const res = await axios.get(
-          "http://localhost:5000/project/getUserProjects",
+          `${Config.apiBaseUrl}/project/getUserProjects`,
           {
             params: { userId: currentUser.id },
             headers: { "Content-Type": "application/json" },

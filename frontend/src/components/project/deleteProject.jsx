@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Config } from "../../config";
 
 const DeleteProjectPage = ({
   deleteOpen,
@@ -18,7 +19,7 @@ const DeleteProjectPage = ({
   const handleClick = async () => {
     try {
       const res = await axios.delete(
-        "http://localhost:5000/project/deleteProject",
+        `${Config.apiBaseUrl}/project/deleteProject`,
         {
           params: { projectId },
           headers: { "Content-Type": "application/json" },

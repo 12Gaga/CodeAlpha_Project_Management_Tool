@@ -80,3 +80,36 @@ export const deleteGroup = (req, res) => {
     return res.status(200).json("Deleted");
   });
 };
+
+export const addMembers = (req, res) => {
+  const q = `INSERT INTO "groupMembers" ("groupId", "memberId") VALUES ($1, $2) RETURNING *`;
+  const groupMemberIds = req.body.addMembers;
+  const completeAddUser = groupMemberIds.map((m) => {
+    return new Promise((resolve, reject) => {
+      db.query(q, [req.body.groupId, m], (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      });
+    });
+  });
+
+  Promise.all(completeAddUser)
+    .then(() => {
+      return res.status(200).json("Add Member Complete");
+    })
+    .catch((err) => {
+      return res
+        .status(500)
+        .json({ error: "Failed to add group members", details: err });
+    });
+};
+
+export const removeMember = (req, res) => {
+  const q = `
+  DELETE FROM "groupMembers" WHERE "groupId" = $1 AND "memberId"=$2
+`;
+  db.query(q, [req.query.groupId, req.query.memberId], (err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.status(200).json("Removed Member");
+  });
+};

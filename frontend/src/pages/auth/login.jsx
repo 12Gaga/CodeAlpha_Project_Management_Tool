@@ -2,6 +2,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { Box, Typography } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Config } from "../../config";
 const LogInPage = () => {
   const navigate = useNavigate();
   const handleLoginSuccess = async (credentialResponse) => {
@@ -9,7 +10,7 @@ const LogInPage = () => {
       const { credential } = credentialResponse;
       // Send token to backend
       const res = await axios.post(
-        "http://localhost:5000/auth/google",
+        `${Config.apiBaseUrl}/auth/google`,
         { token: credential },
         {
           headers: {

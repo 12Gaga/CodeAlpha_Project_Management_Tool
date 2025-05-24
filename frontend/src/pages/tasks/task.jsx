@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import ShowTaskPage from "../../components/task/showTasks";
+import { Config } from "../../config";
 
 const TaskPage = () => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -9,7 +10,7 @@ const TaskPage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get("http://localhost:5000/task/getUserTasks", {
+        const res = await axios.get(`${Config.apiBaseUrl}/task/getUserTasks`, {
           params: { userId: currentUser.id },
           headers: { "Content-Type": "application/json" },
         });

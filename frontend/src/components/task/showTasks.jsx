@@ -26,7 +26,11 @@ const ShowTaskPage = ({ tasks }) => {
         {tasks.map((t) => {
           const daysLeft = moment(t.deadline).diff(moment(), "days");
           return (
-            <Link to={`/task/${t.id}`} style={{ textDecoration: "none" }}>
+            <Link
+              to={`/task/${t.id}`}
+              style={{ textDecoration: "none" }}
+              key={t.id}
+            >
               <Card
                 sx={{
                   width: { xs: 250, md: 300 },

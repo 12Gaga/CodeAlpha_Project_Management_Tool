@@ -7,12 +7,12 @@ import AppRouter from "./components/AppRouter";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ThemeProvider } from "@emotion/react";
 import { theme } from "./theme";
+import { Config } from "./config";
 
-const CLIENT_ID =
-  "1056887258538-h8l6jpi4qvhglanc82k5tafds2a62g1f.apps.googleusercontent.com";
 const root = ReactDOM.createRoot(document.getElementById("root"));
+console.log("config", Config.clientId);
 root.render(
-  <GoogleOAuthProvider clientId={CLIENT_ID}>
+  <GoogleOAuthProvider clientId={Config.clientId}>
     <ThemeProvider theme={theme}>
       <AppRouter />
     </ThemeProvider>

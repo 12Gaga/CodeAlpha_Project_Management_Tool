@@ -7,6 +7,7 @@ import CreateTask from "../../components/task/createTask";
 import ShowTaskPage from "../../components/task/showTasks";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import DeleteProjectPage from "../../components/project/deleteProject";
+import { Config } from "../../config";
 
 const ProjectDetailPage = () => {
   const { id } = useParams();
@@ -17,7 +18,7 @@ const ProjectDetailPage = () => {
 
   async function fetchData() {
     try {
-      const res = await axios.get("http://localhost:5000/project/getProject", {
+      const res = await axios.get(`${Config.apiBaseUrl}/project/getProject`, {
         params: { projectId: id },
         headers: { "Content-Type": "application/json" },
       });
@@ -28,7 +29,7 @@ const ProjectDetailPage = () => {
       console.error(err);
     }
     try {
-      const res = await axios.get("http://localhost:5000/task/getTasks", {
+      const res = await axios.get(`${Config.apiBaseUrl}/task/getTasks`, {
         params: { projectId: id },
         headers: { "Content-Type": "application/json" },
       });

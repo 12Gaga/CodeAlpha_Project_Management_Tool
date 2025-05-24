@@ -5,12 +5,13 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import GroupsIcon from "@mui/icons-material/Groups";
 import { useState } from "react";
 import CreateGroupPage from "../../components/group/createGroup";
 import { useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { Config } from "../../config";
 const GroupPage = () => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const [open, setOpen] = useState(false);
@@ -27,7 +28,7 @@ const GroupPage = () => {
   };
   async function fetchData() {
     try {
-      const res = await axios.get("http://localhost:5000/group/getGroups", {
+      const res = await axios.get(`${Config.apiBaseUrl}/group/getGroups`, {
         params: { userId: currentUser.id },
         headers: { "Content-Type": "application/json" },
       });
@@ -44,7 +45,7 @@ const GroupPage = () => {
   return (
     <>
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <GroupAddIcon
+        <GroupsIcon
           sx={{ fontSize: { xs: 35, sm: 40 }, color: "secondary.main" }}
           onClick={() => {
             setOpen(true);

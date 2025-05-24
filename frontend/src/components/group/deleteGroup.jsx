@@ -7,18 +7,16 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Config } from "../../config";
 
 const DeleteGroupPage = ({ deleteOpen, setDeleteOpen, groupName, groupId }) => {
   const navigate = useNavigate();
   const handleClick = async () => {
     try {
-      const res = await axios.delete(
-        "http://localhost:5000/group/deleteGroup",
-        {
-          params: { groupId },
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+      const res = await axios.delete(`${Config.apiBaseUrl}/group/deleteGroup`, {
+        params: { groupId },
+        headers: { "Content-Type": "application/json" },
+      });
 
       console.log("Response:", res.data);
       navigate("/groups");

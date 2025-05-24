@@ -18,20 +18,22 @@ import axios from "axios";
 import PersonOffIcon from "@mui/icons-material/PersonOff";
 import { Config } from "../../config";
 
-const CreateGroupPage = ({ open, setOpen, fetchData }) => {
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  const [name, setName] = useState("");
+const AddMemberPage = ({
+  setAddMemberOpen,
+  addMemberOpen,
+  groupId,
+  fetchData,
+}) => {
   const [searchName, setSearchName] = useState("");
   const [returnUser, setReturnUser] = useState([]);
   const [exit, setExit] = useState(false);
-  const [addMember, setAddMember] = useState([currentUser]);
+  const [addMember, setAddMember] = useState([]);
 
-  console.log("emefg", addMember);
   const handleClick = async () => {
     try {
       const res = await axios.post(
-        `${Config.apiBaseUrl}/group/createGroup`,
-        { groupName: name, members: addMember.map((i) => i.id) },
+        `${Config.apiBaseUrl}/group/addMembers`,
+        { addMembers: addMember.map((i) => i.id), groupId },
         {
           headers: {
             "Content-Type": "application/json",
@@ -40,15 +42,14 @@ const CreateGroupPage = ({ open, setOpen, fetchData }) => {
       );
 
       console.log("Response:", res.data);
-      setOpen(false);
-      setName("");
-      setSearchName("");
+      setAddMemberOpen(false);
       setReturnUser([]);
+      setSearchName("");
       setExit(false);
-      setAddMember([currentUser]);
+      setAddMember([]);
       fetchData();
     } catch (err) {
-      console.error("Login failed", err);
+      console.error(err);
     }
   };
 
@@ -70,31 +71,21 @@ const CreateGroupPage = ({ open, setOpen, fetchData }) => {
   return (
     <>
       <Dialog
-        open={open}
+        open={addMemberOpen}
         onClose={() => {
-          setOpen(false);
-          setName("");
+          setAddMemberOpen(false);
           setExit(false);
           setSearchName("");
           setReturnUser([]);
-          setAddMember([currentUser]);
+          setAddMember([]);
         }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title" sx={{ color: "secondary.main" }}>
-          Create Group
+          Add Members
         </DialogTitle>
         <DialogContent>
-          <TextField
-            id="outlined-basic"
-            label="Group Name"
-            variant="outlined"
-            sx={{ width: { xs: 210, sm: 300 }, mt: 3 }}
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-          />
           <Box
             sx={{
               display: { xs: "block", sm: "flex" },
@@ -170,7 +161,7 @@ const CreateGroupPage = ({ open, setOpen, fetchData }) => {
                   bgcolor: "info.main",
                 }}
               >
-                Group Members
+                Add Members
                 {addMember.map((member) => (
                   <Chip
                     sx={{ ml: 1, mt: 1 }}
@@ -198,12 +189,11 @@ const CreateGroupPage = ({ open, setOpen, fetchData }) => {
             }}
             variant="outlined"
             onClick={() => {
-              setOpen(false);
-              setName("");
+              setAddMemberOpen(false);
               setExit(false);
               setSearchName("");
               setReturnUser([]);
-              setAddMember([currentUser]);
+              setAddMember([]);
             }}
           >
             Close
@@ -217,7 +207,7 @@ const CreateGroupPage = ({ open, setOpen, fetchData }) => {
               color: "info.main",
             }}
           >
-            Save
+            Add
           </Button>
         </DialogActions>
       </Dialog>
@@ -225,4 +215,4 @@ const CreateGroupPage = ({ open, setOpen, fetchData }) => {
   );
 };
 
-export default CreateGroupPage;
+export default AddMemberPage;

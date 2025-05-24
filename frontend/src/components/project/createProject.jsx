@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
+import { Config } from "../../config";
 
 const CreateProject = ({ open, setOpen, groupId, fetchData }) => {
   const [projectDetail, setProjectDetail] = useState({
@@ -18,7 +19,7 @@ const CreateProject = ({ open, setOpen, groupId, fetchData }) => {
   const handleClick = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:5000/project/createProject",
+        `${Config.apiBaseUrl}/project/createProject`,
         projectDetail,
         {
           headers: {

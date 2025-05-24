@@ -15,6 +15,7 @@ import {
 import CommentPage from "./comment";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import DeleteTaskPage from "./deleteTask";
+import { Config } from "../../config";
 
 const TaskDetailPage = () => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -48,7 +49,7 @@ const TaskDetailPage = () => {
 
   async function fetchData() {
     try {
-      const res = await axios.get("http://localhost:5000/task/getTask", {
+      const res = await axios.get(`${Config.apiBaseUrl}/task/getTask`, {
         params: { taskId: id },
         headers: { "Content-Type": "application/json" },
       });
@@ -60,7 +61,7 @@ const TaskDetailPage = () => {
       console.error(err);
     }
     try {
-      const res = await axios.get("http://localhost:5000/comment/getComments", {
+      const res = await axios.get(`${Config.apiBaseUrl}/comment/getComments`, {
         params: { taskId: id },
         headers: { "Content-Type": "application/json" },
       });
@@ -75,7 +76,7 @@ const TaskDetailPage = () => {
   const handleClick = async (status) => {
     try {
       const res = await axios.put(
-        "http://localhost:5000/task/updateStatus",
+        `${Config.apiBaseUrl}/task/updateStatus`,
         { status: status, taskId: id },
         {
           headers: {

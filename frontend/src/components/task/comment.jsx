@@ -13,6 +13,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useState } from "react";
+import { Config } from "../../config";
 
 const CommentPage = ({
   comments,
@@ -35,7 +36,7 @@ const CommentPage = ({
     if (comments.map((c) => c.id).includes(updateId)) {
       try {
         const res = await axios.put(
-          "http://localhost:5000/comment/updateComment",
+          `${Config.apiBaseUrl}/comment/updateComment`,
           { desc: updateDesc, userId: currentUser.id, taskId, id: updateId },
           {
             headers: {
@@ -57,7 +58,7 @@ const CommentPage = ({
     } else {
       try {
         const res = await axios.post(
-          "http://localhost:5000/comment/createComment",
+          `${Config.apiBaseUrl}/comment/createComment`,
           newComment,
           {
             headers: {
@@ -82,7 +83,7 @@ const CommentPage = ({
   const handleCommentDelete = async (commentId) => {
     try {
       const res = await axios.delete(
-        "http://localhost:5000/comment/deleteComment",
+        `${Config.apiBaseUrl}/comment/deleteComment`,
         {
           data: {
             userId: currentUser.id,
@@ -184,92 +185,94 @@ const CommentPage = ({
 
             {comments.length > 0 && (
               <Box sx={{}}>
-                {comments.map((c) => (
-                  <Card
-                    key={c.id}
-                    sx={{ my: 1, py: 3.5, px: 1.5, position: "relative" }}
-                  >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
+                {comments
+                  .sort((a, b) => a.id - b.id)
+                  .map((c) => (
+                    <Card
+                      key={c.id}
+                      sx={{ my: 1, py: 3.5, px: 1.5, position: "relative" }}
                     >
                       <Box
                         sx={{
                           display: "flex",
                           alignItems: "center",
+                          justifyContent: "space-between",
                         }}
                       >
-                        <img
-                          src={c.profilePic}
-                          style={{
-                            width: "27px",
-                            height: "27px",
-                            borderRadius: "100%",
-                            marginRight: "8px",
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
                           }}
-                        />
-                        <Typography sx={{ fontSize: { xs: 14, md: 17 } }}>
-                          {c.username}
-                        </Typography>
-                      </Box>
-                      <Box sx={{ display: "flex" }}>
-                        <Typography
-                          variant="body2"
-                          sx={{ fontSize: { xs: 12, md: 14 } }}
                         >
-                          {moment(c.createdAt).fromNow()}
-                        </Typography>
-                        <MoreVertIcon
-                          sx={{ fontSize: 20 }}
-                          onClick={() => {
-                            toggleMenu(c.id);
-                          }}
-                        />
-                        {openMenuId === c.id && (
-                          <Card
-                            key={c.id}
-                            id={c.id}
-                            sx={{
-                              position: "absolute",
-                              top: { xs: 35, sm: 45 },
-                              mt: 1,
-                              right: 1,
+                          <img
+                            src={c.profilePic}
+                            style={{
+                              width: "27px",
+                              height: "27px",
+                              borderRadius: "100%",
+                              marginRight: "8px",
                             }}
+                          />
+                          <Typography sx={{ fontSize: { xs: 14, md: 17 } }}>
+                            {c.username}
+                          </Typography>
+                        </Box>
+                        <Box sx={{ display: "flex" }}>
+                          <Typography
+                            variant="body2"
+                            sx={{ fontSize: { xs: 12, md: 14 } }}
                           >
-                            <MenuItem
-                              sx={{ fontSize: 14 }}
-                              onClick={() => {
-                                handleCommentUpdate(c.id, c.desc);
+                            {moment(c.createdAt).fromNow()}
+                          </Typography>
+                          <MoreVertIcon
+                            sx={{ fontSize: 20 }}
+                            onClick={() => {
+                              toggleMenu(c.id);
+                            }}
+                          />
+                          {openMenuId === c.id && (
+                            <Card
+                              key={c.id}
+                              id={c.id}
+                              sx={{
+                                position: "absolute",
+                                top: { xs: 35, sm: 45 },
+                                mt: 1,
+                                right: 1,
                               }}
                             >
-                              <EditIcon
-                                sx={{ fontSize: { xs: 14, md: 19 }, mr: 1 }}
-                              />
-                              Edit
-                            </MenuItem>
-                            <MenuItem
-                              sx={{ fontSize: 14 }}
-                              onClick={() => {
-                                handleCommentDelete(c.id);
-                              }}
-                            >
-                              <DeleteIcon
-                                sx={{ fontSize: { xs: 14, md: 19 }, mr: 1 }}
-                              />
-                              Delete
-                            </MenuItem>
-                          </Card>
-                        )}
+                              <MenuItem
+                                sx={{ fontSize: 14 }}
+                                onClick={() => {
+                                  handleCommentUpdate(c.id, c.desc);
+                                }}
+                              >
+                                <EditIcon
+                                  sx={{ fontSize: { xs: 14, md: 19 }, mr: 1 }}
+                                />
+                                Edit
+                              </MenuItem>
+                              <MenuItem
+                                sx={{ fontSize: 14 }}
+                                onClick={() => {
+                                  handleCommentDelete(c.id);
+                                }}
+                              >
+                                <DeleteIcon
+                                  sx={{ fontSize: { xs: 14, md: 19 }, mr: 1 }}
+                                />
+                                Delete
+                              </MenuItem>
+                            </Card>
+                          )}
+                        </Box>
                       </Box>
-                    </Box>
-                    <Typography variant="body2" sx={{ mt: 3, ml: 4 }}>
-                      {c.desc}
-                    </Typography>
-                  </Card>
-                ))}
+                      <Typography variant="body2" sx={{ mt: 3, ml: 4 }}>
+                        {c.desc}
+                      </Typography>
+                    </Card>
+                  ))}
               </Box>
             )}
           </CardContent>

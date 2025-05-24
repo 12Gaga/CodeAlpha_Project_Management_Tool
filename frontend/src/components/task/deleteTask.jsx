@@ -7,12 +7,13 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Config } from "../../config";
 
 const DeleteTaskPage = ({ deleteOpen, setDeleteOpen, taskName, taskId }) => {
   const navigate = useNavigate();
   const handleClick = async () => {
     try {
-      const res = await axios.delete("http://localhost:5000/task/deleteTask", {
+      const res = await axios.delete(`${Config.apiBaseUrl}/task/deleteTask`, {
         params: { taskId },
         headers: { "Content-Type": "application/json" },
       });

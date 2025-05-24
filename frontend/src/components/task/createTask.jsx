@@ -17,6 +17,7 @@ import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { Config } from "../../config";
 
 const CreateTask = ({ open, setOpen, projectId, memberIds, fetchData }) => {
   const currentDate = dayjs();
@@ -37,7 +38,7 @@ const CreateTask = ({ open, setOpen, projectId, memberIds, fetchData }) => {
   const handleClick = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:5000/task/createTask",
+        `${Config.apiBaseUrl}/task/createTask`,
         { ...taskDetail, deadline: taskDetail.deadline.toISOString() },
         {
           headers: {
@@ -151,7 +152,7 @@ const CreateTask = ({ open, setOpen, projectId, memberIds, fetchData }) => {
                 "StaticDatePicker",
               ]}
             >
-              <DemoItem label="Responsive variant">
+              <DemoItem label="Deadline">
                 <DatePicker
                   value={taskDetail.deadline}
                   onChange={(newValue) => {
